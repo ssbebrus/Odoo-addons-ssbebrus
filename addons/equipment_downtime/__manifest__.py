@@ -10,6 +10,8 @@
         'security/ir.model.access.csv',
         'data/downtime_reason_data.xml',
         'views/downtime_reason_views.xml',
+        'views/equipment_downtime_views.xml',
+        'views/mrp_workcenter_views.xml',
     ],
     'installable': True,
     'application': True,
