@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="reason_breakdown" model="downtime.reason">
+            <field name="name">Поломка станка</field>
+            <field name="code">BREAKDOWN</field>
+        </record>
+        <record id="reason_waiting_material" model="downtime.reason">
+            <field name="name">Ожидание металла</field>
+            <field name="code">NO_MATERIAL</field>
+        </record>
+        <record id="reason_no_power" model="downtime.reason">
+            <field name="name">Нет электричества</field>
+            <field name="code">NO_POWER</field>
+        </record>
+    </data>
+</odoo>
