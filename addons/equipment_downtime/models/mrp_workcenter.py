@@ -28,3 +28,16 @@ class MrpWorkcenter(models.Model):
             'domain': [('workcenter_id', '=', self.id)],
             'context': {'default_workcenter_id': self.id},
         }
+
+    def action_open_add_downtime_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Downtime',
+            'res_model': 'add.downtime.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_workcenter_id': self.id,
+            },
+        }

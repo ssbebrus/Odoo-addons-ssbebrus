@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_add_downtime_wizard_form" model="ir.ui.view">
+        <field name="name">add.downtime.wizard.form</field>
+        <field name="model">add.downtime.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Downtime">
+                <group>
+                    <field name="workcenter_id" readonly="1"/>
+                    <field name="date"/>
+                    <field name="duration"/>
+                    <field name="reason_id" widget="selection"/>
+                    <field name="notes" placeholder="Notes..."/>
+                </group>
+                <footer>
+                    <button string="Add Downtime" name="action_add_downtime" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_add_downtime_wizard" model="ir.actions.act_window">
+        <field name="name">Add Downtime</field>
+        <field name="res_model">add.downtime.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
