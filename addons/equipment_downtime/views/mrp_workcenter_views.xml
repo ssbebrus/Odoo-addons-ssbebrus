@@ -18,21 +18,28 @@
                         type="object"
                         class="oe_stat_button"
                         icon="fa-clock-o">
-                    <field name="downtime_count" widget="statinfo" string="Downtimes"/>
+                    <field name="downtime_count" widget="statinfo" string="Простои"/>
                 </button>
             </xpath>
             <xpath expr="//notebook" position="inside">
-                <page string="Downtimes">
+                <page string="Простои оборудования (OEE)">
                     <group>
-                        <field name="total_downtime_minutes" readonly="1"/>
+                        <group string="Метрики эффективности">
+                            <field name="total_downtime_minutes" string="Всего простоев (мин)" readonly="1"/>
+                            <field name="net_working_time" string="Чистое рабочее время (мин)" readonly="1"/>
+                        </group>
+                        <group string="Корректировка OEE">
+                            <field name="downtime_adjusted_oee" string="Скорректированный OEE (%)" readonly="1" widget="progressbar"/>
+                        </group>
                     </group>
+                    <separator string="История нештатных остановок"/>
                     <field name="downtime_ids">
                         <list editable="bottom">
-                            <field name="date"/>
-                            <field name="reason_id"/>
-                            <field name="duration"/>
-                            <field name="user_id"/>
-                            <field name="notes"/>
+                            <field name="date" string="Дата"/>
+                            <field name="reason_id" string="Причина"/>
+                            <field name="duration" string="Длительность (мин)"/>
+                            <field name="user_id" string="Зафиксировал"/>
+                            <field name="notes" string="Примечания"/>
                         </list>
                     </field>
                 </page>
