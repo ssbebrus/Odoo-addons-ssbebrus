@@ -9,6 +9,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/downtime_reason_data.xml',
+        'data/equipment_downtime_demo.xml',
         'views/downtime_reason_views.xml',
         'views/equipment_downtime_views.xml',
         'views/mrp_workcenter_views.xml',

@@ -5,11 +5,13 @@
         <field name="model">mrp.workcenter</field>
         <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <button name="action_open_add_downtime_wizard"
-                        string="Добавить простой"
-                        type="object"
-                        class="btn-warning"/>
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_open_add_downtime_wizard"
+                            string="Добавить простой"
+                            type="object"
+                            class="btn-warning"/>
+                </header>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="action_view_downtimes"

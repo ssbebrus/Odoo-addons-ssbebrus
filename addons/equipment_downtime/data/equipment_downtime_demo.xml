@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Work Centers -->
+        <record id="workcenter_cnc_1" model="mrp.workcenter">
+            <field name="name">Токарный станок ЧПУ</field>
+            <field name="code">CNC-01</field>
+            <field name="time_efficiency">100.0</field>
+        </record>
+
+        <record id="workcenter_milling_1" model="mrp.workcenter">
+            <field name="name">Фрезерный станок</field>
+            <field name="code">MILL-01</field>
+            <field name="time_efficiency">100.0</field>
+        </record>
+
+        <record id="workcenter_assembly_1" model="mrp.workcenter">
+            <field name="name">Участок сборки</field>
+            <field name="code">ASSY-01</field>
+            <field name="time_efficiency">100.0</field>
+        </record>
+
+        <!-- Sample Equipment Downtimes -->
+        <record id="downtime_cnc_1" model="equipment.downtime">
+            <field name="workcenter_id" ref="workcenter_cnc_1"/>
+            <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+            <field name="duration">45.0</field>
+            <field name="reason_id" ref="reason_breakdown"/>
+            <field name="notes">Перегрев шпинделя и замена режущего инструмента</field>
+        </record>
+
+        <record id="downtime_cnc_2" model="equipment.downtime">
+            <field name="workcenter_id" ref="workcenter_cnc_1"/>
+            <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="duration">120.0</field>
+            <field name="reason_id" ref="reason_waiting_material"/>
+            <field name="notes">Задержка выдачи металлического проката со склада</field>
+        </record>
+
+        <record id="downtime_milling_1" model="equipment.downtime">
+            <field name="workcenter_id" ref="workcenter_milling_1"/>
+            <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+            <field name="duration">30.0</field>
+            <field name="reason_id" ref="reason_no_power"/>
+            <field name="notes">Кратковременный сбой подачи электроэнергии в цехе</field>
+        </record>
+    </data>
+</odoo>
