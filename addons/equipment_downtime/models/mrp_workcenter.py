@@ -10,13 +10,11 @@ class MrpWorkcenter(models.Model):
     net_working_time = fields.Float(
         string='Net Working Time (min)',
         compute='_compute_downtime_metrics',
-        store=True,
         help='Net available working time after deducting forced equipment downtimes.'
     )
     downtime_adjusted_oee = fields.Float(
         string='Adjusted OEE (%)',
         compute='_compute_downtime_metrics',
-        store=True,
         help='Overall Equipment Effectiveness (%) excluding forced downtime from operator penalty.'
     )
 
