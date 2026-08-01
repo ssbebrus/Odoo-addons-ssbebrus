@@ -13,13 +13,37 @@
                             class="btn-warning"/>
                 </header>
             </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_downtimes"
-                        type="object"
-                        class="oe_stat_button"
-                        icon="fa-clock-o">
-                    <field name="downtime_count" widget="statinfo" string="Простои"/>
-                </button>
+            <xpath expr="//div[@name='button_box']" position="replace">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_downtimes"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-clock-o">
+                        <field name="downtime_count" widget="statinfo" string="Простои"/>
+                    </button>
+                    <button name="action_view_downtimes"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-calculator">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="downtime_adjusted_oee"/>%
+                            </span>
+                            <span class="o_stat_text">Скорр. OEE</span>
+                        </div>
+                    </button>
+                    <button name="action_view_downtimes"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-hourglass-half">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="net_working_time"/> мин
+                            </span>
+                            <span class="o_stat_text">Чистое время</span>
+                        </div>
+                    </button>
+                </div>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Простои оборудования (OEE)">
