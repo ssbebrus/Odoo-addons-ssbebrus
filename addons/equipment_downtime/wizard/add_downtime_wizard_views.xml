@@ -4,24 +4,32 @@
         <field name="name">add.downtime.wizard.form</field>
         <field name="model">add.downtime.wizard</field>
         <field name="arch" type="xml">
-            <form string="Add Downtime">
-                <group>
-                    <field name="workcenter_id" readonly="1"/>
-                    <field name="date"/>
-                    <field name="duration"/>
-                    <field name="reason_id" widget="selection"/>
-                    <field name="notes" placeholder="Notes..."/>
-                </group>
+            <form string="Добавить простой оборудования">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="workcenter_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="duration" string="Длительность (мин)"/>
+                            <field name="reason_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Укажите подробности или причину нештатной остановки..."/>
+                    </group>
+                </sheet>
                 <footer>
-                    <button string="Add Downtime" name="action_add_downtime" type="object" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Сохранить простой" name="action_add_downtime" type="object" class="btn-primary"/>
+                    <button string="Отмена" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
 
     <record id="action_add_downtime_wizard" model="ir.actions.act_window">
-        <field name="name">Add Downtime</field>
+        <field name="name">Добавить простой</field>
         <field name="res_model">add.downtime.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
