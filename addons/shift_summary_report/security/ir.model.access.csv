@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shift_summary_report_user,shift.summary.report.user,model_shift_summary_report,base.group_user,1,1,1,1
+access_shift_summary_report_mrp_manager,shift.summary.report.mrp.manager,model_shift_summary_report,mrp.group_mrp_manager,1,1,1,1
