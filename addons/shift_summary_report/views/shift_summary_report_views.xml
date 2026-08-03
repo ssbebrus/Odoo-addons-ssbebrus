@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_shift_summary_report_tree" model="ir.ui.view">
+        <field name="name">shift.summary.report.tree</field>
+        <field name="model">shift.summary.report</field>
+        <field name="arch" type="xml">
+            <list string="Shift Summary Reports" multi_edit="1">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="shift_name"/>
+                <field name="manager_id"/>
+                <field name="produced_qty" sum="Total Output"/>
+                <field name="plan_execution_rate" avg="Avg Plan %" widget="progressbar"/>
+                <field name="scrap_percentage" avg="Avg Scrap %"/>
+                <field name="critical_downtime_minutes" sum="Total Downtime"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'confirmed'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_shift_summary_report_form" model="ir.ui.view">
+        <field name="name">shift.summary.report.form</field>
+        <field name="model">shift.summary.report</field>
+        <field name="arch" type="xml">
+            <form string="Shift Summary Report">
+                <header>
+                    <button name="action_confirm_and_send" string="Подтвердить и отправить рапорт" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_reset_to_draft" string="Сбросить в черновик" type="object" invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="например, Рапорт смены за 2026-08-03" readonly="state == 'confirmed'"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Общие сведения">
+                            <field name="date" readonly="state == 'confirmed'"/>
+                            <field name="shift_name" readonly="state == 'confirmed'"/>
+                            <field name="manager_id" readonly="state == 'confirmed'"/>
+                            <field name="director_email" readonly="state == 'confirmed'"/>
+                            <field name="sent_date" invisible="state != 'confirmed'"/>
+                        </group>
+                        <group string="Производственные показатели смены">
+                            <field name="planned_qty" readonly="state == 'confirmed'"/>
+                            <field name="produced_qty" readonly="state == 'confirmed'"/>
+                            <field name="scrap_qty" readonly="state == 'confirmed'"/>
+                            <field name="scrap_percentage" readonly="1"/>
+                            <field name="plan_execution_rate" readonly="1" widget="progressbar"/>
+                            <field name="critical_downtime_minutes" readonly="state == 'confirmed'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Комментарии и примечания">
+                            <field name="notes" placeholder="Дополнительные комментарии начальника цеха по итогам смены..." readonly="state == 'confirmed'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_shift_summary_report_pivot" model="ir.ui.view">
+        <field name="name">shift.summary.report.pivot</field>
+        <field name="model">shift.summary.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Shift Reports Analytics">
+                <field name="date" type="row" interval="day"/>
+                <field name="shift_name" type="col"/>
+                <field name="produced_qty" type="measure"/>
+                <field name="plan_execution_rate" type="measure"/>
+                <field name="scrap_percentage" type="measure"/>
+                <field name="critical_downtime_minutes" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_shift_summary_report_graph" model="ir.ui.view">
+        <field name="name">shift.summary.report.graph</field>
+        <field name="model">shift.summary.report</field>
+        <field name="arch" type="xml">
+            <graph string="Shift Performance Trend" type="bar">
+                <field name="date" interval="day"/>
+                <field name="plan_execution_rate" type="measure"/>
+                <field name="scrap_percentage" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_shift_summary_report_search" model="ir.ui.view">
+        <field name="name">shift.summary.report.search</field>
+        <field name="model">shift.summary.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Shift Reports">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="manager_id"/>
+                <filter string="Черновики" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Отправлены" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <separator/>
+                <group expand="0" string="Группировка">
+                    <filter string="Дата" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Смена" name="group_shift" context="{'group_by': 'shift_name'}"/>
+                    <filter string="Начальник цеха" name="group_manager" context="{'group_by': 'manager_id'}"/>
+                    <filter string="Статус" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Actions -->
+    <record id="action_shift_summary_report" model="ir.actions.act_window">
+        <field name="name">Shift Summary Reports</field>
+        <field name="res_model">shift.summary.report</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_shift_summary_report_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Создайте первый рапорт смены!
+            </p>
+            <p>
+                Система автоматически рассчитывает объем выпуска, процент брака, время простоев и процент выполнения плана, а также отправляет итоговый сводный документ директору завода.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_shift_summary_report_root"
+              name="Рапорты смен"
+              parent="mrp.menu_mrp_manufacturing"
+              action="action_shift_summary_report"
+              sequence="25"/>
+
+    <menuitem id="menu_shift_summary_report_reporting"
+              name="Аналитика рапортов смен"
+              parent="mrp.menu_mrp_reporting"
+              action="action_shift_summary_report"
+              sequence="35"/>
+</odoo>
