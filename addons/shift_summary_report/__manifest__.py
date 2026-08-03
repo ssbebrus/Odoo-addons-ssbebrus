@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
+        'data/shift_summary_report_demo.xml',
         'views/shift_summary_report_views.xml',
     ],
     'demo': [

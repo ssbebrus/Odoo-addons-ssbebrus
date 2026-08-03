@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- 5 Days Ago: Confirmed Day Shift -->
         <record id="demo_shift_report_1" model="shift.summary.report">
             <field name="name">Рапорт дневной смены — Участок ЧПУ</field>
-            <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+            <field name="date" eval="(datetime.now() - timedelta(days=5)).strftime('%Y-%m-%d')"/>
             <field name="shift_name">day</field>
             <field name="director_email">director@factory.com</field>
             <field name="planned_qty">500.0</field>
@@ -11,13 +12,14 @@
             <field name="scrap_qty">10.0</field>
             <field name="critical_downtime_minutes">15.0</field>
             <field name="state">confirmed</field>
-            <field name="sent_date" eval="(datetime.now() - timedelta(days=2))"/>
-            <field name="notes">Смена выполнила план с превышением. Небольшой простой на станочном участке устранили в течение 15 минут.</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=5))"/>
+            <field name="notes">Смена выполнила план с превышением (+4%). Небольшой простой на токарном станке CNC-01 устранили в течение 15 минут.</field>
         </record>
 
+        <!-- 4 Days Ago: Confirmed Night Shift -->
         <record id="demo_shift_report_2" model="shift.summary.report">
             <field name="name">Рапорт ночной смены — Линия сборки</field>
-            <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="date" eval="(datetime.now() - timedelta(days=4)).strftime('%Y-%m-%d')"/>
             <field name="shift_name">night</field>
             <field name="director_email">director@factory.com</field>
             <field name="planned_qty">400.0</field>
@@ -25,21 +27,96 @@
             <field name="scrap_qty">8.0</field>
             <field name="critical_downtime_minutes">45.0</field>
             <field name="state">confirmed</field>
-            <field name="sent_date" eval="(datetime.now() - timedelta(days=1))"/>
-            <field name="notes">Было зафиксировано время аварийного простоя (45 мин) из-за задержки поставок заготовок со склада.</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=4))"/>
+            <field name="notes">Зафиксирован аварийный простой (45 мин) из-за задержки поставки комплектующих заготовок со склада.</field>
         </record>
 
+        <!-- 3 Days Ago: Confirmed Day Shift -->
         <record id="demo_shift_report_3" model="shift.summary.report">
-            <field name="name">Рапорт смены — Сегодняшняя смена</field>
-            <field name="date" eval="datetime.now().strftime('%Y-%m-%d')"/>
+            <field name="name">Рапорт дневной смены — Штамповочный цех</field>
+            <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+            <field name="shift_name">day</field>
+            <field name="director_email">director@factory.com</field>
+            <field name="planned_qty">650.0</field>
+            <field name="produced_qty">670.0</field>
+            <field name="scrap_qty">12.0</field>
+            <field name="critical_downtime_minutes">0.0</field>
+            <field name="state">confirmed</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=3))"/>
+            <field name="notes">Высокая эффективность оборудования, критических простоев не зафиксировано. Процент брака в пределах нормы (1.79%).</field>
+        </record>
+
+        <!-- 3 Days Ago: Confirmed Night Shift -->
+        <record id="demo_shift_report_4" model="shift.summary.report">
+            <field name="name">Рапорт ночной смены — Фрезерный участок</field>
+            <field name="date" eval="(datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')"/>
+            <field name="shift_name">night</field>
+            <field name="director_email">director@factory.com</field>
+            <field name="planned_qty">450.0</field>
+            <field name="produced_qty">410.0</field>
+            <field name="scrap_qty">25.0</field>
+            <field name="critical_downtime_minutes">60.0</field>
+            <field name="state">confirmed</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=3))"/>
+            <field name="notes">Сбой системы охлаждения на фрезерном станке MILL-01 привёл к 1 часу простоя и повышенному проценту брака (6.1%).</field>
+        </record>
+
+        <!-- 2 Days Ago: Confirmed Shift 1 -->
+        <record id="demo_shift_report_5" model="shift.summary.report">
+            <field name="name">Рапорт первой смены — Механическая обработка</field>
+            <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
             <field name="shift_name">shift_1</field>
             <field name="director_email">director@factory.com</field>
+            <field name="planned_qty">800.0</field>
+            <field name="produced_qty">815.0</field>
+            <field name="scrap_qty">16.0</field>
+            <field name="critical_downtime_minutes">20.0</field>
+            <field name="state">confirmed</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=2))"/>
+            <field name="notes">Выполнение плана составило 101.88%. Плановая плашка инструмента заменена во время технологического перерыва.</field>
+        </record>
+
+        <!-- 1 Day Ago: Confirmed Shift 2 -->
+        <record id="demo_shift_report_6" model="shift.summary.report">
+            <field name="name">Рапорт второй смены — Малярный участок</field>
+            <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
+            <field name="shift_name">shift_2</field>
+            <field name="director_email">director@factory.com</field>
+            <field name="planned_qty">350.0</field>
+            <field name="produced_qty">340.0</field>
+            <field name="scrap_qty">7.0</field>
+            <field name="critical_downtime_minutes">10.0</field>
+            <field name="state">confirmed</field>
+            <field name="sent_date" eval="(datetime.now() - timedelta(days=1))"/>
+            <field name="notes">Покрасочная камера работала в штатном режиме. Отклонение по выпуску незначительное (-2.86%).</field>
+        </record>
+
+        <!-- Today: Draft Shift Report 1 -->
+        <record id="demo_shift_report_7" model="shift.summary.report">
+            <field name="name">Рапорт смены — Главный сборочный конвейер</field>
+            <field name="date" eval="datetime.now().strftime('%Y-%m-%d')"/>
+            <field name="shift_name">day</field>
+            <field name="director_email">director@factory.com</field>
             <field name="planned_qty">600.0</field>
-            <field name="produced_qty">590.0</field>
+            <field name="produced_qty">595.0</field>
             <field name="scrap_qty">5.0</field>
             <field name="critical_downtime_minutes">0.0</field>
             <field name="state">draft</field>
-            <field name="notes">Текущая смена близка к завершению. Все станки работали без критических простоев.</field>
+            <field name="notes">Текущая смена подходит к концу. Готово к подведению итогов и отправке директору завода.</field>
+        </record>
+
+        <!-- Today: Draft Shift Report 2 -->
+        <record id="demo_shift_report_8" model="shift.summary.report">
+            <field name="name">Рапорт первой смены — Инструментальный цех</field>
+            <field name="date" eval="datetime.now().strftime('%Y-%m-%d')"/>
+            <field name="shift_name">shift_1</field>
+            <field name="director_email">director@factory.com</field>
+            <field name="planned_qty">300.0</field>
+            <field name="produced_qty">290.0</field>
+            <field name="scrap_qty">3.0</field>
+            <field name="critical_downtime_minutes">30.0</field>
+            <field name="state">draft</field>
+            <field name="notes">Проведена переналадка оборудования (30 мин). Ожидает подтверждения начальника цеха.</field>
         </record>
     </data>
 </odoo>
