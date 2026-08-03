@@ -99,19 +99,17 @@
         <field name="name">shift.summary.report.search</field>
         <field name="model">shift.summary.report</field>
         <field name="arch" type="xml">
-            <search string="Search Shift Reports">
+            <search>
                 <field name="name"/>
                 <field name="date"/>
                 <field name="manager_id"/>
                 <filter string="Черновики" name="draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Отправлены" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
                 <separator/>
-                <group expand="0" string="Группировка">
-                    <filter string="Дата" name="group_date" context="{'group_by': 'date'}"/>
-                    <filter string="Смена" name="group_shift" context="{'group_by': 'shift_name'}"/>
-                    <filter string="Начальник цеха" name="group_manager" context="{'group_by': 'manager_id'}"/>
-                    <filter string="Статус" name="group_state" context="{'group_by': 'state'}"/>
-                </group>
+                <filter string="Дата" name="group_date" context="{'group_by': 'date'}"/>
+                <filter string="Смена" name="group_shift" context="{'group_by': 'shift_name'}"/>
+                <filter string="Начальник цеха" name="group_manager" context="{'group_by': 'manager_id'}"/>
+                <filter string="Статус" name="group_state" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
