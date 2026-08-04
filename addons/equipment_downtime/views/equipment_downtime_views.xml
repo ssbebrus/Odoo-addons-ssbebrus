@@ -37,10 +37,80 @@
         </field>
     </record>
 
+    <record id="view_equipment_downtime_reason_pie_graph" model="ir.ui.view">
+        <field name="name">equipment.downtime.reason.pie.graph</field>
+        <field name="model">equipment.downtime</field>
+        <field name="arch" type="xml">
+            <graph string="Причины простоев оборудования" type="pie" sample="1">
+                <field name="reason_id"/>
+                <field name="duration" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_equipment_downtime_monthly_graph" model="ir.ui.view">
+        <field name="name">equipment.downtime.monthly.graph</field>
+        <field name="model">equipment.downtime</field>
+        <field name="arch" type="xml">
+            <graph string="Загрузка и простои оборудования" type="bar" sample="1">
+                <field name="workcenter_id"/>
+                <field name="reason_id"/>
+                <field name="duration" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_equipment_downtime_monthly_pivot" model="ir.ui.view">
+        <field name="name">equipment.downtime.monthly.pivot</field>
+        <field name="model">equipment.downtime</field>
+        <field name="arch" type="xml">
+            <pivot string="Аналитика простоев оборудования">
+                <field name="workcenter_id" type="row"/>
+                <field name="reason_id" type="col"/>
+                <field name="duration" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_equipment_downtime_search" model="ir.ui.view">
+        <field name="name">equipment.downtime.search</field>
+        <field name="model">equipment.downtime</field>
+        <field name="arch" type="xml">
+            <search string="Поиск простоев">
+                <field name="workcenter_id"/>
+                <field name="reason_id"/>
+                <field name="date"/>
+                <filter string="Текущий месяц" name="this_month" domain="[('date', '&gt;=', (context_today() + relativedelta(day=1)).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Группировка">
+                    <filter string="Оборудование / Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
+                    <filter string="Причина простоя" name="group_by_reason" context="{'group_by': 'reason_id'}"/>
+                    <filter string="Месяц" name="group_by_month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="action_equipment_downtime" model="ir.actions.act_window">
         <field name="name">Equipment Downtimes</field>
         <field name="res_model">equipment.downtime</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_equipment_downtime_monthly_report" model="ir.actions.act_window">
+        <field name="name">Отчет по загрузке оборудования</field>
+        <field name="res_model">equipment.downtime</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="context">{'search_default_this_month': 1, 'search_default_group_by_workcenter': 1}</field>
+        <field name="search_view_id" ref="view_equipment_downtime_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Нет данных о простоях оборудования за этот период.
+            </p>
+            <p>
+                Отчет по загрузке оборудования строится на основе простоев, фиксируемых мастером цеха в конце смены.
+            </p>
+        </field>
     </record>
 
     <menuitem id="menu_equipment_downtime"
@@ -48,4 +118,10 @@
               parent="mrp.menu_mrp_manufacturing"
               action="action_equipment_downtime"
               sequence="50"/>
+
+    <menuitem id="menu_equipment_downtime_report"
+              name="Отчет по загрузке оборудования"
+              parent="mrp.menu_mrp_reporting"
+              action="action_equipment_downtime_monthly_report"
+              sequence="15"/>
 </odoo>

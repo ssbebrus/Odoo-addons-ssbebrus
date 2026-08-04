@@ -11,6 +11,11 @@
                             string="Добавить простой"
                             type="object"
                             class="btn-warning"/>
+                    <button name="action_open_downtime_reason_pie"
+                            string="Диаграмма причин простоя"
+                            type="object"
+                            class="btn-info"
+                            icon="fa-pie-chart"/>
                 </header>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="replace">
@@ -20,6 +25,15 @@
                             class="oe_stat_button"
                             icon="fa-clock-o">
                         <field name="downtime_count" widget="statinfo" string="Простои"/>
+                    </button>
+                    <button name="action_open_downtime_reason_pie"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pie-chart">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Причины</span>
+                            <span class="o_stat_text">простоя (%)</span>
+                        </div>
                     </button>
                     <button name="action_view_downtimes"
                             type="object"
@@ -55,6 +69,9 @@
                         <group string="Корректировка OEE">
                             <field name="downtime_adjusted_oee" string="Скорректированный OEE (%)" readonly="1" widget="progressbar"/>
                         </group>
+                    </group>
+                    <group string="Аналитика причин простоев">
+                        <field name="downtime_reason_summary" string="Структура простоев (%)" readonly="1"/>
                     </group>
                     <separator string="История нештатных остановок"/>
                     <field name="downtime_ids">
