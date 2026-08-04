@@ -17,6 +17,30 @@ class MrpWorkcenter(models.Model):
         compute='_compute_downtime_metrics',
         help='Overall Equipment Effectiveness (%) excluding forced downtime from operator penalty.'
     )
+    downtime_reason_summary = fields.Text(
+        string='Reason Breakdown Summary',
+        compute='_compute_downtime_reason_summary',
+        help='Percentage breakdown of downtime reasons for this work center.'
+    )
+
+    @api.depends('downtime_ids.duration', 'downtime_ids.reason_id')
+    def _compute_downtime_reason_summary(self):
+        for record in self:
+            total = sum(record.downtime_ids.mapped('duration'))
+            if not total:
+                record.downtime_reason_summary = "Нет зарегистрированных простоев."
+                continue
+
+            reason_totals = {}
+            for dt in record.downtime_ids:
+                reason_name = dt.reason_id.name or "Не указано"
+                reason_totals[reason_name] = reason_totals.get(reason_name, 0.0) + dt.duration
+
+            lines = []
+            for name, dur in sorted(reason_totals.items(), key=lambda x: x[1], reverse=True):
+                pct = round((dur / total) * 100.0, 1)
+                lines.append(f"{name}: {pct:.1f}% ({int(dur)} мин)")
+            record.downtime_reason_summary = "\n".join(lines)
 
     @api.depends('downtime_ids.duration')
     def _compute_total_downtime_minutes(self):
@@ -64,3 +88,23 @@ class MrpWorkcenter(models.Model):
                 'default_workcenter_id': self.id,
             },
         }
+
+    def action_open_downtime_reason_pie(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Причины простоя: {self.name}',
+            'res_model': 'equipment.downtime',
+            'view_mode': 'graph,pivot,list',
+            'views': [
+                (self.env.ref('equipment_downtime.view_equipment_downtime_reason_pie_graph').id, 'graph'),
+                (self.env.ref('equipment_downtime.view_equipment_downtime_monthly_pivot').id, 'pivot'),
+                (self.env.ref('equipment_downtime.view_equipment_downtime_tree').id, 'list'),
+            ],
+            'domain': [('workcenter_id', '=', self.id)],
+            'context': {
+                'search_default_group_by_reason': 1,
+                'default_workcenter_id': self.id,
+            },
+        }
+
