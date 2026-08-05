@@ -76,17 +76,15 @@
         <field name="name">equipment.downtime.search</field>
         <field name="model">equipment.downtime</field>
         <field name="arch" type="xml">
-            <search string="Поиск простоев">
+            <search>
                 <field name="workcenter_id"/>
                 <field name="reason_id"/>
                 <field name="date"/>
-                <filter string="Дата простоев" name="this_month" date="date"/>
+                <filter string="Есть простоя (мин)" name="has_duration" domain="[('duration', '&gt;', 0)]"/>
                 <separator/>
-                <group expand="0" string="Группировка">
-                    <filter string="Оборудование / Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
-                    <filter string="Причина простоя" name="group_by_reason" context="{'group_by': 'reason_id'}"/>
-                    <filter string="Дата" name="group_by_date" context="{'group_by': 'date'}"/>
-                </group>
+                <filter string="Оборудование / Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
+                <filter string="Причина простоя" name="group_by_reason" context="{'group_by': 'reason_id'}"/>
+                <filter string="Дата" name="group_by_date" context="{'group_by': 'date'}"/>
             </search>
         </field>
     </record>
@@ -101,7 +99,7 @@
         <field name="name">Отчет по загрузке оборудования</field>
         <field name="res_model">equipment.downtime</field>
         <field name="view_mode">graph,pivot,list,form</field>
-        <field name="context">{'search_default_this_month': 1, 'search_default_group_by_workcenter': 1}</field>
+        <field name="context">{'search_default_group_by_workcenter': 1}</field>
         <field name="search_view_id" ref="view_equipment_downtime_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
