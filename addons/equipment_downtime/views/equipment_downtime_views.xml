@@ -80,12 +80,12 @@
                 <field name="workcenter_id"/>
                 <field name="reason_id"/>
                 <field name="date"/>
-                <filter string="Текущий месяц" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <filter string="Дата простоев" name="this_month" date="date"/>
                 <separator/>
                 <group expand="0" string="Группировка">
                     <filter string="Оборудование / Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
                     <filter string="Причина простоя" name="group_by_reason" context="{'group_by': 'reason_id'}"/>
-                    <filter string="Месяц" name="group_by_month" context="{'group_by': 'date:month'}"/>
+                    <filter string="Дата" name="group_by_date" context="{'group_by': 'date'}"/>
                 </group>
             </search>
         </field>
