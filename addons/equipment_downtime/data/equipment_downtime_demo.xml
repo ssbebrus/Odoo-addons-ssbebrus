@@ -20,29 +20,39 @@
             <field name="time_efficiency">100.0</field>
         </record>
 
-        <!-- Sample Equipment Downtimes -->
+        <!-- Equipment Downtimes for Current Month (August 2026) -->
+        <!-- CNC-01: 30% Breakdown (90 min) / 70% Material (210 min) -->
         <record id="downtime_cnc_1" model="equipment.downtime">
             <field name="workcenter_id" ref="workcenter_cnc_1"/>
             <field name="date" eval="time.strftime('%Y-%m-%d')"/>
-            <field name="duration">45.0</field>
+            <field name="duration">90.0</field>
             <field name="reason_id" ref="reason_breakdown"/>
-            <field name="notes">Перегрев шпинделя и замена режущего инструмента</field>
+            <field name="notes">Поломка: Перегрев шпинделя и замена режущей головки</field>
         </record>
 
         <record id="downtime_cnc_2" model="equipment.downtime">
             <field name="workcenter_id" ref="workcenter_cnc_1"/>
             <field name="date" eval="(datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')"/>
-            <field name="duration">120.0</field>
+            <field name="duration">210.0</field>
             <field name="reason_id" ref="reason_waiting_material"/>
-            <field name="notes">Задержка выдачи металлического проката со склада</field>
+            <field name="notes">Нет заготовок: Задержка поставки металлического проката со склада</field>
         </record>
 
+        <!-- MILL-01 Downtimes -->
         <record id="downtime_milling_1" model="equipment.downtime">
             <field name="workcenter_id" ref="workcenter_milling_1"/>
             <field name="date" eval="time.strftime('%Y-%m-%d')"/>
-            <field name="duration">30.0</field>
+            <field name="duration">60.0</field>
             <field name="reason_id" ref="reason_no_power"/>
-            <field name="notes">Кратковременный сбой подачи электроэнергии в цехе</field>
+            <field name="notes">Кратковременный сбой подачи электроэнергии в 1-м цехе</field>
+        </record>
+
+        <record id="downtime_milling_2" model="equipment.downtime">
+            <field name="workcenter_id" ref="workcenter_milling_1"/>
+            <field name="date" eval="(datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')"/>
+            <field name="duration">90.0</field>
+            <field name="reason_id" ref="reason_breakdown"/>
+            <field name="notes">Плановая регулировка приводного реня фрезы</field>
         </record>
     </data>
 </odoo>
