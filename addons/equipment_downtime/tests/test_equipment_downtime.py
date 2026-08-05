@@ -14,8 +14,12 @@ class TestEquipmentDowntime(TransactionCase):
         cls.Wizard = cls.env['add.downtime.wizard']
 
         cls.reason_breakdown = cls.Reason.create({
-            'name': 'Test Breakdown',
+            'name': 'Поломка',
             'code': 'TEST_BREAKDOWN',
+        })
+        cls.reason_no_material = cls.Reason.create({
+            'name': 'Нет заготовок',
+            'code': 'TEST_NO_MATERIAL',
         })
 
         cls.workcenter = cls.Workcenter.create({
@@ -72,3 +76,30 @@ class TestEquipmentDowntime(TransactionCase):
         })
         action = wizard_valid.action_add_downtime()
         self.assertEqual(action.get('type'), 'ir.actions.act_window_close')
+
+    def test_04_downtime_reason_percentage_breakdown(self):
+        """Test percentage calculation for downtime reasons (30% breakdown / 70% no material)."""
+        self.Downtime.create({
+            'workcenter_id': self.workcenter.id,
+            'date': Date.today(),
+            'duration': 30.0,
+            'reason_id': self.reason_breakdown.id,
+        })
+        self.Downtime.create({
+            'workcenter_id': self.workcenter.id,
+            'date': Date.today(),
+            'duration': 70.0,
+            'reason_id': self.reason_no_material.id,
+        })
+
+        summary = self.workcenter.downtime_reason_summary
+        self.assertIn('Нет заготовок: 70.0%', summary)
+        self.assertIn('Поломка: 30.0%', summary)
+
+    def test_05_downtime_reason_pie_action(self):
+        """Test opening downtime reason pie chart action."""
+        action = self.workcenter.action_open_downtime_reason_pie()
+        self.assertEqual(action.get('type'), 'ir.actions.act_window')
+        self.assertEqual(action.get('res_model'), 'equipment.downtime')
+        self.assertEqual(action.get('domain'), [('workcenter_id', '=', self.workcenter.id)])
+        self.assertEqual(action.get('context', {}).get('search_default_group_by_reason'), 1)
