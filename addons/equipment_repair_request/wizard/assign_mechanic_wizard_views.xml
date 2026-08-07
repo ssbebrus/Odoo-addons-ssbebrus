@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_assign_mechanic_wizard_form" model="ir.ui.view">
+        <field name="name">assign.mechanic.wizard.form</field>
+        <field name="model">assign.mechanic.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Назначить слесаря-ремонтника">
+                <sheet>
+                    <group>
+                        <field name="request_id" readonly="1"/>
+                        <field name="assignee_id" options="{'no_create': True}"/>
+                        <field name="comment" placeholder="Укажите дополнительные инструкции для ремонта..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Назначить и перевести в «В работе»" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="Отмена" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
