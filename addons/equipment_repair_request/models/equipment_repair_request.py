@@ -51,11 +51,7 @@ class EquipmentRepairRequest(models.Model):
         'res.users',
         string='Ответственный слесарь-ремонтник',
         tracking=True,
-        domain=lambda self: [('groups_id', 'in', [
-            self.env.ref('equipment_repair_request.group_repair_mechanic', raise_if_not_found=False) and self.env.ref('equipment_repair_request.group_repair_mechanic').id or False,
-            self.env.ref('equipment_repair_request.group_chief_mechanic', raise_if_not_found=False) and self.env.ref('equipment_repair_request.group_chief_mechanic').id or False,
-            self.env.ref('base.group_user').id
-        ])]
+        domain="[('share', '=', False)]"
     )
     reporter_id = fields.Many2one(
         'res.users',

@@ -108,7 +108,11 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter/>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -128,11 +132,9 @@
                 <filter string="В работе" name="filter_in_progress" domain="[('state', '=', 'in_progress')]"/>
                 <filter string="Мои заявки" name="filter_my_requests" domain="[('assignee_id', '=', uid)]"/>
                 <separator/>
-                <group expand="0" string="Группировка">
-                    <filter string="Статус" name="group_by_state" context="{'group_by': 'state'}"/>
-                    <filter string="Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
-                    <filter string="Слесарь-ремонтник" name="group_by_assignee" context="{'group_by': 'assignee_id'}"/>
-                </group>
+                <filter string="Статус" name="group_by_state" context="{'group_by': 'state'}"/>
+                <filter string="Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
+                <filter string="Слесарь-ремонтник" name="group_by_assignee" context="{'group_by': 'assignee_id'}"/>
             </search>
         </field>
     </record>

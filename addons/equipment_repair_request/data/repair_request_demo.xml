@@ -2,7 +2,7 @@
 <odoo>
     <data noupdate="1">
         <record id="demo_repair_request_1" model="equipment.repair.request">
-            <field name="workcenter_id" ref="equipment_downtime.workcenter_cnc_01"/>
+            <field name="workcenter_id" ref="equipment_downtime.workcenter_cnc_1"/>
             <field name="shop_section">Цех ЧПУ обработки</field>
             <field name="stop_datetime" eval="(datetime.now() - timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
             <field name="description">Протекает масло в гидравлике станка ЧПУ, падение давления в гидросистеме</field>
@@ -10,7 +10,7 @@
         </record>
 
         <record id="demo_repair_request_2" model="equipment.repair.request">
-            <field name="workcenter_id" ref="equipment_downtime.workcenter_mill_01"/>
+            <field name="workcenter_id" ref="equipment_downtime.workcenter_milling_1"/>
             <field name="shop_section">Механический участок №2</field>
             <field name="stop_datetime" eval="(datetime.now() - timedelta(hours=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
             <field name="description">Перегрев главного шпинделя и посторонний шум при высоких оборотах</field>

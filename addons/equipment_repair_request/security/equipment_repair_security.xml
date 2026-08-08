@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <record id="module_category_equipment_repair" model="ir.module.category">
-            <field name="name">Заявки на ремонт оборудования</field>
-            <field name="description">Управление ремонтом оборудования и фиксацией поломок</field>
-            <field name="sequence">20</field>
-        </record>
-
         <record id="group_chief_mechanic" model="res.groups">
             <field name="name">Главный механик / Инженер по ремонту</field>
-            <field name="category_id" ref="module_category_equipment_repair"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="comment">Полный доступ к управлению заявками на ремонт и назначению слесарей.</field>
         </record>
 
         <record id="group_repair_mechanic" model="res.groups">
             <field name="name">Слесарь-ремонтник</field>
-            <field name="category_id" ref="module_category_equipment_repair"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="comment">Доступ к просмотру и выполнению назначенных заявок на ремонт.</field>
         </record>
     </data>
 </odoo>

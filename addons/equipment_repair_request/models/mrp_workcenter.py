@@ -7,7 +7,7 @@ class MrpWorkcenter(models.Model):
     repair_request_ids = fields.One2many(
         'equipment.repair.request',
         'workcenter_id',
-        string='Заявки на ремонт'
+        string='Заявки на ремонт оборудования'
     )
     repair_request_count = fields.Integer(
         string='Заявки на ремонт',
