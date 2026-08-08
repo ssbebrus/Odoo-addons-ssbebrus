@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Kanban View -->
+    <record id="view_equipment_repair_request_kanban" model="ir.ui.view">
+        <field name="name">equipment.repair.request.kanban</field>
+        <field name="model">equipment.repair.request</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="workcenter_id"/>
+                <field name="shop_section"/>
+                <field name="stop_datetime"/>
+                <field name="description"/>
+                <field name="state"/>
+                <field name="assignee_id"/>
+                <field name="reporter_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong class="o_kanban_record_title text-primary"><field name="name"/></strong>
+                                <field name="state" widget="label_selection" options="{'classes': {'needs_repair': 'danger', 'in_progress': 'warning', 'done': 'success', 'cancel': 'secondary'}}"/>
+                            </div>
+                            <div class="text-muted small mb-1">
+                                🏙️ <b><field name="shop_section"/></b>
+                            </div>
+                            <div class="mb-1">
+                                ⚙️ <b>Станок:</b> <field name="workcenter_id"/>
+                            </div>
+                            <div class="text-danger small mb-2">
+                                ⏱️ <b>Время остановки:</b> <field name="stop_datetime"/>
+                            </div>
+                            <div class="border-top pt-1 mb-2 text-wrap" style="font-size: 0.9em;">
+                                💬 <i><field name="description"/></i>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-1 border-top">
+                                <div>
+                                    <span t-if="record.assignee_id.raw_value">👨‍🔧 <field name="assignee_id"/></span>
+                                    <span t-else="" class="text-danger">⚠️ <i>Не назначен</i></span>
+                                </div>
+                                <div t-if="record.state.raw_value == 'needs_repair'">
+                                    <button name="action_assign_mechanic" type="object" class="btn btn-sm btn-outline-primary">
+                                        Назначить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tree / List View -->
+    <record id="view_equipment_repair_request_tree" model="ir.ui.view">
+        <field name="name">equipment.repair.request.list</field>
+        <field name="model">equipment.repair.request</field>
+        <field name="arch" type="xml">
+            <list string="Заявки на ремонт" decoration-danger="state == 'needs_repair'" decoration-warning="state == 'in_progress'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="stop_datetime"/>
+                <field name="workcenter_id"/>
+                <field name="shop_section"/>
+                <field name="description"/>
+                <field name="reporter_id"/>
+                <field name="assignee_id"/>
+                <field name="state" widget="badge" decoration-danger="state == 'needs_repair'" decoration-warning="state == 'in_progress'" decoration-success="state == 'done'"/>
+                <button name="action_assign_mechanic" type="object" string="Назначить" class="btn-primary" invisible="state != 'needs_repair'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_equipment_repair_request_form" model="ir.ui.view">
+        <field name="name">equipment.repair.request.form</field>
+        <field name="model">equipment.repair.request</field>
+        <field name="arch" type="xml">
+            <form string="Заявка на ремонт">
+                <header>
+                    <button name="action_assign_mechanic" type="object" string="Назначить слесаря" class="btn-primary" invisible="state != 'needs_repair'"/>
+                    <button name="action_start_repair" type="object" string="Перевести в «В работе»" class="btn-secondary" invisible="state != 'needs_repair' or not assignee_id"/>
+                    <button name="action_complete_repair" type="object" string="Завершить ремонт" class="btn-success" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" type="object" string="Отменить" class="btn-secondary" invisible="state in ('done', 'cancel')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="needs_repair,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Информация о поломке">
+                            <field name="workcenter_id" options="{'no_create': True}"/>
+                            <field name="shop_section"/>
+                            <field name="stop_datetime"/>
+                            <field name="reporter_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Назначение и статус">
+                            <field name="assignee_id" options="{'no_create': True}"/>
+                            <field name="downtime_id" readonly="1" invisible="not downtime_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Описание поломки">
+                            <field name="description" placeholder="Пример: Протекает масло в гидравлике станка ЧПУ..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_equipment_repair_request_search" model="ir.ui.view">
+        <field name="name">equipment.repair.request.search</field>
+        <field name="model">equipment.repair.request</field>
+        <field name="arch" type="xml">
+            <search string="Поиск заявок на ремонт">
+                <field name="name"/>
+                <field name="workcenter_id"/>
+                <field name="shop_section"/>
+                <field name="assignee_id"/>
+                <field name="description"/>
+                <filter string="Требуется ремонт" name="filter_needs_repair" domain="[('state', '=', 'needs_repair')]"/>
+                <filter string="В работе" name="filter_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Мои заявки" name="filter_my_requests" domain="[('assignee_id', '=', uid)]"/>
+                <separator/>
+                <group expand="0" string="Группировка">
+                    <filter string="Статус" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Станок" name="group_by_workcenter" context="{'group_by': 'workcenter_id'}"/>
+                    <filter string="Слесарь-ремонтник" name="group_by_assignee" context="{'group_by': 'assignee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_equipment_repair_request" model="ir.actions.act_window">
+        <field name="name">Заявки на ремонт</field>
+        <field name="res_model">equipment.repair.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_equipment_repair_request_search"/>
+        <field name="context">{'search_default_filter_needs_repair': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Заявок на ремонт пока нет
+            </p>
+            <p>
+                Здесь отображаются оперативные заявки на ремонт оборудования, поступившие из цеха от рабочих и начальников смен.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_equipment_repair_request_root"
+              name="Заявки на ремонт"
+              parent="mrp.menu_mrp_manufacturing"
+              action="action_equipment_repair_request"
+              sequence="25"/>
+</odoo>
