@@ -37,7 +37,7 @@ class MrpWorkcenter(models.Model):
             'name': 'Сообщить о поломке станка',
             'res_model': 'equipment.repair.request',
             'view_mode': 'form',
-            'target': 'new',
+            'target': 'current',
             'context': {
                 'default_workcenter_id': self.id,
                 'default_stop_datetime': fields.Datetime.now(),
